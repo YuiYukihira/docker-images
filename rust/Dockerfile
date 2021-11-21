@@ -12,4 +12,5 @@ RUN apt-get update \
     && echo "$SHASUM  sccache.tar.gz" | sha256sum -c - \
     && tar xf sccache.tar.gz \
     && mv sccache-$VERSION-x86_64-unknown-linux-musl/sccache /usr/local/bin/sccache \
+    && chmod +x /usr/local/bin/sccache \
     && rm -r sccache.tar.gz sccache-$VERSION-x86_64-unknown-linux-musl && cargo install -f just
