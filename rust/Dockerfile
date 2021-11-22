@@ -3,7 +3,8 @@ FROM rust:1.56
 ARG VERSION=v0.2.15
 ARG SHASUM=e5d03a9aa3b9fac7e490391bbe22d4f42c840d31ef9eaf127a03101930cbb7ca
 
-RUN apt-get update \
+RUN set -eux; \
+    apt-get update \
     && apt-get install -y lld curl \
     && rm -rf /var/lib/apt/lists/* \
     &&  curl -L "https://github.com/mozilla/sccache/releases/download/${VERSION}/sccache-${VERSION}-x86_64-unknown-linux-musl.tar.gz" > sccache.tar.gz \
@@ -13,4 +14,11 @@ RUN apt-get update \
     && tar xf sccache.tar.gz \
     && mv sccache-$VERSION-x86_64-unknown-linux-musl/sccache /usr/local/bin/sccache \
     && chmod +x /usr/local/bin/sccache \
-    && rm -r sccache.tar.gz sccache-$VERSION-x86_64-unknown-linux-musl && cargo install -f just
+    && rm -r sccache.tar.gz sccache-$VERSION-x86_64-unknown-linux-musl
+ENV CARGO_UDEPS_VERSION=v0.1.24
+RUN set -eux; \
+    curl --fail --location "https://github.com/est31/cargo-udeps/releases/download/${CARGO_UDEPS_VERSION}/cargo-udeps-${CARGO_UDEPS_VERSION}-x86_64-unknown-linux-gnu.tar.gz" --output /tmp/cargo-udeps.tar.gz; \
+    tar --directory "/usr/local/bin" -xzvf "/tmp/cargo-udeps.tar.gz" --strip-components 2 --wildcards "*/cargo-udeps"; \
+    rm /tmp/cargo-udeps.tar.gz; \
+    chmod +x /usr/local/bin/cargo-udeps; \
+    cargo-udeps --version
