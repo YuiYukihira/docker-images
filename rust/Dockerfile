@@ -29,3 +29,5 @@ RUN set -eux; \
     rm /tmp/cargo-udeps.tar.gz; \
     chmod +x /usr/local/bin/cargo-udeps; \
     cargo-udeps --version
+RUN set -eux; \
+    cargo install cargo-workspaces
