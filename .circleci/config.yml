@@ -8,9 +8,9 @@ workflows:
   build:
     jobs:
       - makepress-orb/publish-docker:
-          context: [lulubot]
-          username: LULUBOT_USERNAME
-          password: GITHUB_TOKEN_LULUBOT
+          context: [yuiyukihira]
+          username: GITHUB_USERNAME
+          password: GITHUB_PAT
           image: yuiyukihira/rust
           registry: ghcr.io
           tag: latest
