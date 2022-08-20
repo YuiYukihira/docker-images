@@ -1,20 +1,17 @@
 version: 2.1
 
 orbs:
-  aws-ecr: circleci/aws-ecr@7.3.0
+  makepress-orb: makepress/makepress-orb@2.4.1
 
 workflows:
   version: 2
   build:
     jobs:
-      - rust:
-          context: [aws]
-
-jobs:
-  rust:
-    executor: aws-ecr/default
-    steps:
-      - aws-ecr/build-and-push-image:
-          path: rust
-          repo: makepress-rust
-          create-repo: true
+      - makepress-orb/publish-docker:
+          context: [lulubot]
+          username: LULUBOT_USERNAME
+          password: GITHUB_TOKEN_LULUBOT
+          image: yuiyukihira/rust
+          registry: ghcr.io
+          tag: latest
+          dockerfile: rust
